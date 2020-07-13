@@ -5,6 +5,8 @@ import 'package:flutter_app/models/article_model.dart';
 import 'package:flutter_app/helper/news.dart';
 
 class HomeScreen extends StatefulWidget {
+
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -34,6 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+
   @override
   //home screen widget
   @override
@@ -57,10 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
               scaleFactor = 1;
               isDrawerOpen = false;
             });
-          } else if (isDrawerOpen == false) {
+          }
+          /* else  {
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => NewsDetailedScreen()));
-          }
+          }*/
         }
       },
       child: AnimatedContainer(
@@ -76,19 +81,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CircularProgressIndicator(),
               )
             : PageView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: articles.length,
-                itemBuilder: (context, index) {
-                  return NewsTile(
-                    imageUrl: articles[index].urlToImage,
-                    title: articles[index].title,
-                    desc: articles[index].description,
-                    sourceName: articles[index].sourceName,
-                    isDrawerOpen: isDrawerOpen,
-                    url: articles[index].url,
-                  );
-                },
-              ),
+                    scrollDirection: Axis.vertical,
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) {
+                      return NewsTile(
+                        imageUrl: articles[index].urlToImage,
+                        title: articles[index].title,
+                        desc: articles[index].description,
+                        sourceName: articles[index].sourceName,
+                        isDrawerOpen: isDrawerOpen,
+                        url: articles[index].url,
+                      );
+                    },
+                  ),
+
       ),
     );
   }

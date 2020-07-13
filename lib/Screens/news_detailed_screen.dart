@@ -48,8 +48,8 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
         child: WebView(
           initialUrl: widget.newsUrl,
           gestureRecognizers: Set()
-            ..add(Factory<VerticalDragGestureRecognizer>(
-                () => VerticalDragGestureRecognizer())),
+            ..add(Factory<HorizontalDragGestureRecognizer>(
+                () => HorizontalDragGestureRecognizer())),
           javascriptMode: JavascriptMode.unrestricted,
           onWebViewCreated: ((WebViewController webViewController) {
             _controller.complete(webViewController);
