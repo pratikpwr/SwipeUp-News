@@ -1,6 +1,8 @@
 # flutter_app
 
-A new Flutter application.
+SwipeUp News
+A news app based on newsapi.org api
+
 
 ## Getting Started
 
