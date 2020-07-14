@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Screens/drawer_screen.dart';
 import 'package:flutter_app/Screens/home_screen.dart';
 import 'package:splashscreen/splashscreen.dart';
 
@@ -12,9 +11,9 @@ class MyApp extends StatelessWidget {
       title: 'SwipeUpNews',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          primaryColor: Colors.white,
+         // primaryColor: Colors.white,
           canvasColor: const Color(0xFFefefef),
-          accentColor: const Color(0xFF325b88),
+          accentColor: Colors.blueAccent,
           /*
           title text  = const Color(0xFF080b10)
           description text = const Color(0xFF7e808b)
@@ -39,19 +38,19 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 2,
+      seconds: 1,
       gradientBackground: RadialGradient(
           radius: 1,
           colors: [ const Color(0xff80deea),const Color(0xff03a9f4),]),
       image: Image.asset('assets/swipe.png'),
       loaderColor: Colors.white,
       photoSize: 150,
-      navigateAfterSeconds: MyHomePage(),
+      navigateAfterSeconds: HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+/*class MyHomePage extends StatefulWidget {
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
@@ -60,12 +59,13 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+      body: PageView(
         children: <Widget>[
           DrawerScreen(),
           HomeScreen(),
+          NewsDetailedScreen()
         ],
-      ),
+      )
     );
   }
-}
+}*/

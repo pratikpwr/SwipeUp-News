@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -42,20 +41,68 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
           ],
         ),
       ),
-      body: Container(
-        height: MediaQuery.of(context).size.height,
-        width: MediaQuery.of(context).size.width,
-        child: WebView(
-          initialUrl: widget.newsUrl,
-          gestureRecognizers: Set()
-            ..add(Factory<HorizontalDragGestureRecognizer>(
-                () => HorizontalDragGestureRecognizer())),
-          javascriptMode: JavascriptMode.unrestricted,
-          onWebViewCreated: ((WebViewController webViewController) {
-            _controller.complete(webViewController);
-          }),
+      body: GestureDetector(
+        onHorizontalDragUpdate: (details) {
+          if (details.delta.dx > 0) {
+            // Right Swipe
+            Navigator.pop(context);
+
+          }
+        },
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: WebView(
+            initialUrl: widget.newsUrl,
+            gestureRecognizers: Set()
+              ..add(Factory<PlatformViewVerticalGestureRecognizer>(
+                  () => PlatformViewVerticalGestureRecognizer())),
+            javascriptMode: JavascriptMode.unrestricted,
+            onWebViewCreated: ((WebViewController webViewController) {
+              _controller.complete(webViewController);
+            }),
+          ),
         ),
       ),
     );
   }
+}
+// stack overflow solution -- vertical gestures where not working properly so added the below class
+//https://stackoverflow.com/questions/57069716/scrolling-priority-when-combining-horizontal-scrolling-with-webview
+class PlatformViewVerticalGestureRecognizer
+    extends VerticalDragGestureRecognizer {
+  PlatformViewVerticalGestureRecognizer({PointerDeviceKind kind})
+      : super(kind: kind);
+
+  Offset _dragDistance = Offset.zero;
+
+  @override
+  void addPointer(PointerEvent event) {
+    startTrackingPointer(event.pointer);
+  }
+
+  @override
+  void handleEvent(PointerEvent event) {
+    _dragDistance = _dragDistance + event.delta;
+    if (event is PointerMoveEvent) {
+      final double dy = _dragDistance.dy.abs();
+      final double dx = _dragDistance.dx.abs();
+
+      if (dy > dx && dy > kTouchSlop) {
+        // vertical drag - accept
+        resolve(GestureDisposition.accepted);
+        _dragDistance = Offset.zero;
+      } else if (dx > kTouchSlop && dx > dy) {
+        // horizontal drag - stop tracking
+        stopTrackingPointer(event.pointer);
+        _dragDistance = Offset.zero;
+      }
+    }
+  }
+
+  @override
+  String get debugDescription => 'horizontal drag (platform view)';
+
+  @override
+  void didStopTrackingLastPointer(int pointer) {}
 }

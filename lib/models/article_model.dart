@@ -16,3 +16,4 @@ class ArticleModel {
       this.sourceName,
       this.publishedAt});
 }
+

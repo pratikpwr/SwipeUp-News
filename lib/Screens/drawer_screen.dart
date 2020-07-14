@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Screens/categorynews_screen.dart';
 import 'package:flutter_app/Screens/home_screen.dart';
+import 'package:flutter_app/custom_routes.dart';
+import 'package:flutter_app/models/configuration.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DrawerScreen extends StatefulWidget {
@@ -9,129 +10,212 @@ class DrawerScreen extends StatefulWidget {
 }
 
 class _DrawerScreenState extends State<DrawerScreen> {
-  IconData icon;
-  String title;
-  String category;
+  String searchedWord;
+  List<Map> sources = newsSource;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-          gradient: RadialGradient(
-        radius: 1,
-        // colors: [const Color(0xff121212) ,const Color(0xff121212), ],
-        colors: [
-          const Color(0xff80deea),
-          const Color(0xff03a9f4),
-        ],
-        //center: Alignment(-0.3, -0.2)
-      )),
-      child: Padding(
-        padding:
-            const EdgeInsets.only(top: 100, bottom: 100, left: 20, right: 10),
+    return Scaffold(
+      // backgroundColor: Theme.of(context).accentColor,
+      body: GestureDetector(
+        onHorizontalDragUpdate: (details) {
+          if (details.delta.dx < 0) {
+            //Left Swipe
+            Navigator.pop(context);
+          }
+        },
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Text(
-                  'SwipeUp',
-                  style: GoogleFonts.pacifico(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold),
-                ),
-                Text(
-                  'News',
-                  style: GoogleFonts.pacifico(
-                      color: Colors.blue,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold),
-                )
-              ],
+            SizedBox(
+              height: 35,
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                buildCategories(Icons.business, 'Business', () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              CategoryNewsScreen(category: 'business')));
-                }),
-                SizedBox(
-                  height: 20,
-                ),
-                buildCategories(Icons.live_tv, 'Entertainment', () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              CategoryNewsScreen(category: 'entertainment')));
-                }),
-                SizedBox(
-                  height: 20,
-                ),
-                buildCategories(Icons.spa, 'Health', () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              CategoryNewsScreen(category: 'health')));
-                }),
-                SizedBox(
-                  height: 20,
-                ),
-                buildCategories(Icons.directions_run, 'Sport', () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              CategoryNewsScreen(category: 'sport')));
-                }),
-                SizedBox(
-                  height: 20,
-                ),
-                buildCategories(Icons.computer, 'Technology', () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              CategoryNewsScreen(category: 'technology')));
-                }),
-                SizedBox(
-                  height: 20,
-                ),
-              ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text(
+                    'DashBoard',
+                    style: GoogleFonts.ptSans(
+                        fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                  IconButton(icon: Icon(Icons.settings), onPressed: () {})
+                ],
+              ),
             ),
-            buildCategories(Icons.settings, 'Settings', () {})
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: TextField(
+                autocorrect: true,
+                textInputAction: TextInputAction.search,
+                style: GoogleFonts.ptSans(fontSize: 16),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Search',
+                  prefixIcon: Icon(Icons.search),
+                ),
+                onSubmitted: (text) {
+                  searchedWord = text;
+                },
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              'News Sources',
+              style: GoogleFonts.ptSans(fontSize: 18),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              height: 100,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: newsSource.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    width: 150,
+                    child: Image.network(
+                      newsSource[index]['imageUrl'],
+                      height: 100,
+                      width: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              'Categories',
+              style: GoogleFonts.ptSans(fontSize: 18),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                child: Column(
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        CategoryCard(
+                          category: categories[0]['category'],
+                          imageUrl: categories[0]['imageUrl'],
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                SlideFromRightPageRoute(
+                                    widget: HomeScreen(
+                                        category: categories[0]['category'])));
+                          },
+                        ),
+                        CategoryCard(
+                            category: categories[1]['category'],
+                            imageUrl: categories[1]['imageUrl'],
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  SlideFromRightPageRoute(
+                                      widget: HomeScreen(
+                                          category: categories[1]
+                                              ['category'])));
+                            })
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        CategoryCard(
+                          category: categories[2]['category'],
+                          imageUrl: categories[2]['imageUrl'],
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                SlideFromRightPageRoute(
+                                    widget: HomeScreen(
+                                        category: categories[2]['category'])));
+                          },
+                        ),
+                        CategoryCard(
+                          category: categories[3]['category'],
+                          imageUrl: categories[3]['imageUrl'],
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                SlideFromRightPageRoute(
+                                    widget: HomeScreen(
+                                        category: categories[3]['category'])));
+                          },
+                        )
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        CategoryCard(
+                          category: categories[4]['category'],
+                          imageUrl: categories[4]['imageUrl'],
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                SlideFromRightPageRoute(
+                                    widget: HomeScreen(
+                                        category: categories[4]['category'])));
+                          },
+                        ),
+                        CategoryCard(
+                          category: categories[5]['category'],
+                          imageUrl: categories[5]['imageUrl'],
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                SlideFromRightPageRoute(
+                                    widget: HomeScreen(
+                                        category: categories[5]['category'])));
+                          },
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),
     );
   }
+}
 
-  Widget buildCategories(IconData icon, String title, Function onTap) {
+class CategoryCard extends StatelessWidget {
+  final String imageUrl;
+  final String category;
+  final Function onTap;
+
+  CategoryCard({this.category, this.imageUrl, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      child: Row(
-        children: <Widget>[
-          Icon(
-            icon,
-            color: const Color(0xfff5f5f5),
-          ),
-          SizedBox(
-            width: 10,
-          ),
-          Text(
-            title,
-            style: GoogleFonts.ptSans(
-                color: const Color(0xfff5f5f5),
-                fontSize: 14,
-                fontWeight: FontWeight.bold),
-          )
-        ],
+      child: Card(
+        elevation: 8,
+        child: Column(
+          children: <Widget>[
+            Image.network(imageUrl,
+                fit: BoxFit.cover,
+                height: 100,
+                width: MediaQuery.of(context).size.width / 2.1),
+            Text(category[0].toUpperCase() + category.substring(1),
+                style: GoogleFonts.ptSans(fontSize: 18, color: Colors.blue))
+          ],
+        ),
       ),
     );
   }
