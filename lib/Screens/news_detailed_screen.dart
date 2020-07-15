@@ -21,26 +21,6 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: <Widget>[
-            Text(
-              'SwipeUp',
-              style: GoogleFonts.pacifico(
-                  color: Colors.black54,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            ),
-            Text(
-              'News',
-              style: GoogleFonts.pacifico(
-                  color: Colors.blue,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold),
-            )
-          ],
-        ),
-      ),
       body: GestureDetector(
         onHorizontalDragUpdate: (details) {
           if (details.delta.dx > 0) {
@@ -49,19 +29,48 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
 
           }
         },
-        child: Container(
-          height: MediaQuery.of(context).size.height,
-          width: MediaQuery.of(context).size.width,
-          child: WebView(
-            initialUrl: widget.newsUrl,
-            gestureRecognizers: Set()
-              ..add(Factory<PlatformViewVerticalGestureRecognizer>(
-                  () => PlatformViewVerticalGestureRecognizer())),
-            javascriptMode: JavascriptMode.unrestricted,
-            onWebViewCreated: ((WebViewController webViewController) {
-              _controller.complete(webViewController);
-            }),
-          ),
+        child: Column(
+          children: <Widget>[
+            SizedBox(
+              height: 30,
+            ),
+            Row(
+              children: <Widget>[
+                IconButton(icon: Icon(Icons.arrow_back), onPressed:(){
+                  Navigator.pop(context);
+                }),
+
+                Text(
+                  'SwipeUp',
+                  style: GoogleFonts.spectralSc(
+                      color: const Color(0xff26374D),
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  'News',
+                  style: GoogleFonts.spectralSc(
+                      color: Colors.blue,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
+                )
+              ],
+            ),
+            Container(
+              height: MediaQuery.of(context).size.height-80,
+              width: MediaQuery.of(context).size.width,
+              child: WebView(
+                initialUrl: widget.newsUrl,
+                gestureRecognizers: Set()
+                  ..add(Factory<PlatformViewVerticalGestureRecognizer>(
+                      () => PlatformViewVerticalGestureRecognizer())),
+                javascriptMode: JavascriptMode.unrestricted,
+                onWebViewCreated: ((WebViewController webViewController) {
+                  _controller.complete(webViewController);
+                }),
+              ),
+            ),
+          ],
         ),
       ),
     );

@@ -1,19 +1,37 @@
 import 'dart:convert';
-
 import 'package:flutter_app/models/article_model.dart';
 import 'package:http/http.dart' as http;
 
 class News {
   List<ArticleModel> news = [];
+  String apiKey = '088e0a35838e4d6191b27dc049ad7720';
+  Future<void> getNews(String category , String searchedNews , String domain ) async {
 
-  Future<void> getNews(String category) async {
-    String url = category == null
-        ? "http://newsapi.org/v2/top-headlines?country=in&pageSize=50&apiKey=088e0a35838e4d6191b27dc049ad7720"
-        : "http://newsapi.org/v2/top-headlines?country=in&category=$category&pageSize=50&apiKey=088e0a35838e4d6191b27dc049ad7720";
+    String link (String category , String searchedNews , String domain){
+      if(category == null && searchedNews== null && domain == null){
+        return "http://newsapi.org/v2/top-headlines?country=in&pageSize=50&apiKey=$apiKey";
+      }
+      else if( searchedNews== null && domain == null){
+        return "http://newsapi.org/v2/top-headlines?country=in&category=$category&pageSize=50&apiKey=$apiKey";
+      }
+      else if(category == null && searchedNews== null ){
+        return "https://newsapi.org/v2/everything?domains=$domain&pageSize=50&apiKey=$apiKey";
+      }
+      else if(category == null && domain== null){
+        print(searchedNews);
+        return "https://newsapi.org/v2/everything?q=$searchedNews&pageSize=50&apiKey=$apiKey";
+      }
+      else{
+        return null;
+      }
+    }
+
+    String url = link(category ,  searchedNews ,  domain);
     /*use &
     q='word u  want to search'
     v2 /top-headlines or /everything
-    sources=
+    domains=  .com
+    language=hi en
     time   from=2020-07-11&to=2020-07-11
     country=us
     category=business
@@ -31,6 +49,7 @@ class News {
             content: element["content"],
             url: element["url"],
             urlToImage: element["urlToImage"],
+            publishedAt: element["publishedAt"]
           );
           news.add(articleModel);
         }

@@ -8,7 +8,7 @@ class SlideFromLeftPageRoute extends PageRouteBuilder{
       pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
         return widget;
       },
-      transitionDuration: const Duration(milliseconds: 400),
+      transitionDuration: const Duration(milliseconds: 500),
       transitionsBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation, Widget child) {
         return effectMap[PageTransitionType.slideInRight](Curves.linear, animation, secondaryAnimation, child);
@@ -24,7 +24,7 @@ class SlideFromRightPageRoute extends PageRouteBuilder{
       pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
         return widget;
       },
-      transitionDuration: const Duration(milliseconds: 400),
+      transitionDuration: const Duration(milliseconds: 500),
       transitionsBuilder: (BuildContext context, Animation<double> animation,
           Animation<double> secondaryAnimation, Widget child) {
         return effectMap[PageTransitionType.slideInLeft](Curves.linear, animation, secondaryAnimation, child);

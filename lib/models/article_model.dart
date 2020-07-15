@@ -5,7 +5,7 @@ class ArticleModel {
   String urlToImage;
   String content;
   String sourceName;
-  DateTime publishedAt;
+  String publishedAt;
 
   ArticleModel(
       {this.title,

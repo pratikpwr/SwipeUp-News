@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Screens/home_screen.dart';
 import 'package:flutter_app/custom_routes.dart';
@@ -17,6 +18,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       // backgroundColor: Theme.of(context).accentColor,
+      resizeToAvoidBottomPadding: false,
       body: GestureDetector(
         onHorizontalDragUpdate: (details) {
           if (details.delta.dx < 0) {
@@ -30,21 +32,28 @@ class _DrawerScreenState extends State<DrawerScreen> {
               height: 35,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Text(
-                    'DashBoard',
-                    style: GoogleFonts.ptSans(
-                        fontSize: 20, fontWeight: FontWeight.w600),
+                    'SwipeUp',
+                    style: GoogleFonts.spectralSc(
+                        color: const Color(0xff26374D),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
                   ),
-                  IconButton(icon: Icon(Icons.settings), onPressed: () {})
+                  Text(
+                    'News',
+                    style: GoogleFonts.spectralSc(
+                        color: Colors.blue,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold),
+                  )
                 ],
-              ),
+              )
             ),
             Padding(
-              padding: const EdgeInsets.all(5),
+              padding: const EdgeInsets.symmetric(horizontal: 10 , vertical: 5),
               child: TextField(
                 autocorrect: true,
                 textInputAction: TextInputAction.search,
@@ -56,6 +65,13 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 ),
                 onSubmitted: (text) {
                   searchedWord = text;
+                  Navigator.push(
+                      context,
+                      SlideFromRightPageRoute(
+                          widget: HomeScreen(
+                        title: searchedWord,
+                        searchedNews: searchedWord,
+                      )));
                 },
               ),
             ),
@@ -67,7 +83,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               style: GoogleFonts.ptSans(fontSize: 18),
             ),
             SizedBox(
-              height: 15,
+              height: 5,
             ),
             Container(
               height: 100,
@@ -76,20 +92,33 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 itemCount: newsSource.length,
                 itemBuilder: (context, index) {
                   return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    width: 150,
-                    child: Image.network(
-                      newsSource[index]['imageUrl'],
-                      height: 100,
-                      width: 150,
-                      fit: BoxFit.cover,
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: InkWell(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            SlideFromRightPageRoute(
+                                widget: HomeScreen(
+                              title: newsSource[index]['title'],
+                              domain: newsSource[index]['web'],
+                            )));
+                      },
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.network(
+                          newsSource[index]['imageUrl'],
+                          height: 100,
+                          width: 150,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
                   );
                 },
               ),
             ),
             SizedBox(
-              height: 10,
+              height: 15,
             ),
             Text(
               'Categories',
@@ -98,93 +127,102 @@ class _DrawerScreenState extends State<DrawerScreen> {
             SizedBox(
               height: 10,
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Container(
-                width: MediaQuery.of(context).size.width,
-                child: Column(
+            Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        CategoryCard(
-                          category: categories[0]['category'],
-                          imageUrl: categories[0]['imageUrl'],
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                SlideFromRightPageRoute(
-                                    widget: HomeScreen(
-                                        category: categories[0]['category'])));
-                          },
-                        ),
-                        CategoryCard(
-                            category: categories[1]['category'],
-                            imageUrl: categories[1]['imageUrl'],
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  SlideFromRightPageRoute(
-                                      widget: HomeScreen(
-                                          category: categories[1]
-                                              ['category'])));
-                            })
-                      ],
+                    CategoryCard(
+                      category: categories[0]['category'],
+                      imageUrl: categories[0]['imageUrl'],
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            SlideFromRightPageRoute(
+                                widget: HomeScreen(
+                                    title: categories[0]['category'],
+                                    category: categories[0]['category'])));
+                      },
                     ),
-                    Row(
-                      children: <Widget>[
-                        CategoryCard(
-                          category: categories[2]['category'],
-                          imageUrl: categories[2]['imageUrl'],
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                SlideFromRightPageRoute(
-                                    widget: HomeScreen(
-                                        category: categories[2]['category'])));
-                          },
-                        ),
-                        CategoryCard(
-                          category: categories[3]['category'],
-                          imageUrl: categories[3]['imageUrl'],
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                SlideFromRightPageRoute(
-                                    widget: HomeScreen(
-                                        category: categories[3]['category'])));
-                          },
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        CategoryCard(
-                          category: categories[4]['category'],
-                          imageUrl: categories[4]['imageUrl'],
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                SlideFromRightPageRoute(
-                                    widget: HomeScreen(
-                                        category: categories[4]['category'])));
-                          },
-                        ),
-                        CategoryCard(
-                          category: categories[5]['category'],
-                          imageUrl: categories[5]['imageUrl'],
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                SlideFromRightPageRoute(
-                                    widget: HomeScreen(
-                                        category: categories[5]['category'])));
-                          },
-                        )
-                      ],
-                    ),
+                    CategoryCard(
+                        category: categories[1]['category'],
+                        imageUrl: categories[1]['imageUrl'],
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              SlideFromRightPageRoute(
+                                  widget: HomeScreen(
+                                      title: categories[1]['category'],
+                                      category: categories[1]
+                                          ['category'])));
+                        })
                   ],
                 ),
-              ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    CategoryCard(
+                      category: categories[2]['category'],
+                      imageUrl: categories[2]['imageUrl'],
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            SlideFromRightPageRoute(
+                                widget: HomeScreen(
+                                    title: categories[2]['category'],
+                                    category: categories[2]['category'])));
+                      },
+                    ),
+                    CategoryCard(
+                      category: categories[3]['category'],
+                      imageUrl: categories[3]['imageUrl'],
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            SlideFromRightPageRoute(
+                                widget: HomeScreen(
+                                    title: categories[3]['category'],
+                                    category: categories[3]['category'])));
+                      },
+                    )
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    CategoryCard(
+                      category: categories[4]['category'],
+                      imageUrl: categories[4]['imageUrl'],
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            SlideFromRightPageRoute(
+                                widget: HomeScreen(
+                                    title: categories[4]['category'],
+                                    category: categories[4]['category'])));
+                      },
+                    ),
+                    CategoryCard(
+                      category: categories[5]['category'],
+                      imageUrl: categories[5]['imageUrl'],
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            SlideFromRightPageRoute(
+                                widget: HomeScreen(
+                                    title: categories[5]['category'],
+                                    category: categories[5]['category'])));
+                      },
+                    )
+                  ],
+                ),
+              ],
             ),
           ],
         ),
@@ -210,8 +248,8 @@ class CategoryCard extends StatelessWidget {
           children: <Widget>[
             Image.network(imageUrl,
                 fit: BoxFit.cover,
-                height: 100,
-                width: MediaQuery.of(context).size.width / 2.1),
+                height: 90,
+                width: MediaQuery.of(context).size.width / 2.3,),
             Text(category[0].toUpperCase() + category.substring(1),
                 style: GoogleFonts.ptSans(fontSize: 18, color: Colors.blue))
           ],

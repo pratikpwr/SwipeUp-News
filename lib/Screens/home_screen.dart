@@ -5,7 +5,11 @@ import 'package:flutter_app/helper/news.dart';
 
 class HomeScreen extends StatefulWidget {
   final String category;
-  HomeScreen({this.category});
+  final String searchedNews;
+  final String domain;
+  final String title;
+
+  HomeScreen({this.category, this.domain , this.title, this.searchedNews});
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -24,7 +28,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getNews() async {
     News newsClass = News();
-    await newsClass.getNews(widget.category);
+    await newsClass.getNews(widget.category , widget.searchedNews , widget.domain);
     articles = newsClass.news;
 
     setState(() {
@@ -50,7 +54,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     desc: articles[index].description,
                     sourceName: articles[index].sourceName,
                     url: articles[index].url,
-                    category: widget.category == null ?'TopNews': widget.category,
+                    publishedAt: articles[index].publishedAt,
+                    heading: widget.title== null ? 'TopNews': widget.title,
+                    category:  widget.category== null ? 'TopNews': widget.category,
                   );
                 },
               ));

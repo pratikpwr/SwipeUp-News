@@ -38,11 +38,11 @@ class _SplashState extends State<Splash> {
   @override
   Widget build(BuildContext context) {
     return SplashScreen(
-      seconds: 1,
+      seconds: 3,
       gradientBackground: RadialGradient(
           radius: 1,
           colors: [ const Color(0xff80deea),const Color(0xff03a9f4),]),
-      image: Image.asset('assets/swipe.png'),
+      image: Image.asset('assets/swipeUp.png'),
       loaderColor: Colors.white,
       photoSize: 150,
       navigateAfterSeconds: HomeScreen(),
