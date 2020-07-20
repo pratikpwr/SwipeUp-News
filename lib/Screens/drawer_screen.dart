@@ -4,6 +4,7 @@ import 'package:flutter_app/Screens/home_screen.dart';
 import 'package:flutter_app/custom_routes.dart';
 import 'package:flutter_app/models/configuration.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:swipe_gesture_recognizer/swipe_gesture_recognizer.dart';
 
 class DrawerScreen extends StatefulWidget {
   @override
@@ -19,12 +20,9 @@ class _DrawerScreenState extends State<DrawerScreen> {
     return Scaffold(
       // backgroundColor: Theme.of(context).accentColor,
       resizeToAvoidBottomPadding: false,
-      body: GestureDetector(
-        onHorizontalDragUpdate: (details) {
-          if (details.delta.dx < 0) {
-            //Left Swipe
-            Navigator.pop(context);
-          }
+      body: SwipeGestureRecognizer(
+        onSwipeLeft: (){
+          Navigator.pop(context);
         },
         child: Column(
           children: <Widget>[

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:swipe_gesture_recognizer/swipe_gesture_recognizer.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsDetailedScreen extends StatefulWidget {
@@ -21,13 +22,9 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GestureDetector(
-        onHorizontalDragUpdate: (details) {
-          if (details.delta.dx > 0) {
-            // Right Swipe
-            Navigator.pop(context);
-
-          }
+      body: SwipeGestureRecognizer(
+        onSwipeRight: (){
+          Navigator.pop(context);
         },
         child: Column(
           children: <Widget>[
@@ -65,7 +62,7 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
                   ..add(Factory<PlatformViewVerticalGestureRecognizer>(
                       () => PlatformViewVerticalGestureRecognizer())),
                 javascriptMode: JavascriptMode.unrestricted,
-                onWebViewCreated: ((WebViewController webViewController) {
+               onWebViewCreated: ((WebViewController webViewController) {
                   _controller.complete(webViewController);
                 }),
               ),

@@ -1,7 +1,11 @@
+
 import 'package:flutter/material.dart';
+import 'package:flutter_app/Screens/drawer_screen.dart';
 import 'package:flutter_app/Widget/news_tile.dart';
+import 'package:flutter_app/custom_routes.dart';
 import 'package:flutter_app/models/article_model.dart';
 import 'package:flutter_app/helper/news.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
   final String category;
@@ -9,14 +13,14 @@ class HomeScreen extends StatefulWidget {
   final String domain;
   final String title;
 
-  HomeScreen({this.category, this.domain , this.title, this.searchedNews});
+  HomeScreen({this.category, this.domain, this.title, this.searchedNews});
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
   List<ArticleModel> articles = new List<ArticleModel>();
-
 
   bool isLoading = true;
 
@@ -28,7 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   getNews() async {
     News newsClass = News();
-    await newsClass.getNews(widget.category , widget.searchedNews , widget.domain);
+    await newsClass.getNews(
+        widget.category, widget.searchedNews, widget.domain);
     articles = newsClass.news;
 
     setState(() {
@@ -40,25 +45,56 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: isLoading
-            ? Center(
-                child: CircularProgressIndicator(),
-              )
-            : PageView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: articles.length,
-                itemBuilder: (context, index) {
-                  return NewsTile(
-                    imageUrl: articles[index].urlToImage,
-                    title: articles[index].title,
-                    desc: articles[index].description,
-                    sourceName: articles[index].sourceName,
-                    url: articles[index].url,
-                    publishedAt: articles[index].publishedAt,
-                    heading: widget.title== null ? 'TopNews': widget.title,
-                    category:  widget.category== null ? 'TopNews': widget.category,
-                  );
-                },
-              ));
+        body: Stack(
+          children: <Widget>[
+            isLoading
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : articles.length == 0
+                    ? Center(
+                        child: Text(
+                          'Error',
+                          style: GoogleFonts.ptSans(
+                              color: Colors.red, fontSize: 26),
+                        ),
+                      )
+                    : PageView.builder(
+                        scrollDirection: Axis.vertical,
+                        itemCount: articles.length,
+                        itemBuilder: (context, index) {
+                          return NewsTile(
+                            imageUrl: articles[index].urlToImage,
+                            title: articles[index].title,
+                            desc: articles[index].description,
+                            sourceName: articles[index].sourceName,
+                            url: articles[index].url,
+                            publishedAt: articles[index].publishedAt,
+                            heading:
+                                widget.title == null ? 'TopNews' : widget.title,
+                            category: widget.category == null
+                                ? 'TopNews'
+                                : widget.category,
+                          );
+                        },
+                      ),
+            Column(
+              children: <Widget>[
+                SizedBox(
+                  height: 25,
+                ),
+                IconButton(
+                    icon: Icon(
+                      Icons.menu,
+                      color: Colors.black,
+                    ),
+                    onPressed: () {
+                      Navigator.push(context,
+                          SlideFromLeftPageRoute(widget: DrawerScreen()));
+                    })
+              ],
+            ),
+          ],
+        ));
   }
 }

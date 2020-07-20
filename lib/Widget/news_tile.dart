@@ -6,17 +6,24 @@ import 'package:flutter_app/Screens/news_detailed_screen.dart';
 import 'package:flutter_app/custom_routes.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:swipe_gesture_recognizer/swipe_gesture_recognizer.dart';
 
 class NewsTile extends StatelessWidget {
-  final String imageUrl, title, desc, sourceName, url , category , heading , publishedAt;
-
+  final String imageUrl,
+      title,
+      desc,
+      sourceName,
+      url,
+      category,
+      heading,
+      publishedAt;
 
   NewsTile(
       {this.imageUrl,
       this.title,
-        this.heading,
+      this.heading,
       this.desc,
-        this.publishedAt,
+      this.publishedAt,
       this.sourceName,
       this.url,
       this.category});
@@ -26,23 +33,22 @@ class NewsTile extends StatelessWidget {
     //return formatDate(newsDate, [h,':',m,]);
     String formattedDay = new DateFormat.MMMEd().format(newsDate);
     String formattedTime = new DateFormat.jm().format(newsDate);
-    return formattedDay+" | "+ formattedTime;
+    return formattedDay + " | " + formattedTime;
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onHorizontalDragUpdate: (details) {
-        if (details.delta.dx > 0) {
-          // Right Swipe
-          Navigator.push(
-              context,
-              SlideFromLeftPageRoute(widget: DrawerScreen())
-             );
-        } else if (details.delta.dx < 0 ) {
-          //Left Swipe
-          Navigator.push(context, SlideFromRightPageRoute(widget: NewsDetailedScreen(newsUrl: url,)) );
-        }
+    return SwipeGestureRecognizer(
+      onSwipeLeft: () {
+        Navigator.push(
+            context,
+            SlideFromRightPageRoute(
+                widget: NewsDetailedScreen(
+              newsUrl: url,
+            )));
+      },
+      onSwipeRight: () {
+        Navigator.push(context, SlideFromLeftPageRoute(widget: DrawerScreen()));
       },
       child: Column(
         //crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,14 +58,15 @@ class NewsTile extends StatelessWidget {
             children: <Widget>[
               CachedNetworkImage(
                 imageUrl: imageUrl,
-                height: 350,
+                height: 320,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
               Container(
                 color: const Color(0xffffffff),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -79,25 +86,24 @@ class NewsTile extends StatelessWidget {
               ),
             ],
           ),
-
           Container(
-            height: MediaQuery.of(context).size.height- 400,
-            padding: const EdgeInsets.symmetric(horizontal: 20 ),
+            height: MediaQuery.of(context).size.height - 370,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-
                 Column(
                   children: <Widget>[
                     SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     Text(
                       sourceName,
-                      style: GoogleFonts.ptSans(fontSize: 14),
+                      style: GoogleFonts.ptSans(
+                          color: Colors.blueAccent, fontSize: 14),
                     ),
                     SizedBox(
-                      height: 10,
+                      height: 20,
                     ),
                     Text(
                       title,
@@ -121,11 +127,12 @@ class NewsTile extends StatelessWidget {
                 SizedBox(
                   height: 15,
                 ),
-                Text('Swipe left for detailed News' , style: GoogleFonts.ptSans(color: Colors.grey , fontSize: 12 ))
+                Text('Swipe left for detailed News',
+                    style: GoogleFonts.ptSans(
+                        color: Colors.blueAccent, fontSize: 12))
               ],
             ),
           ),
-
         ],
       ),
     );
