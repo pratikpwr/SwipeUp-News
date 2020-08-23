@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Screens/home_screen.dart';
-import 'package:flutter_app/custom_routes.dart';
-import 'package:flutter_app/models/configuration.dart';
+import '../Screens/home_screen.dart';
+import '../custom_routes.dart';
+import '../models/configuration.dart';
+import '../models/theme_changer.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:swipe_gesture_recognizer/swipe_gesture_recognizer.dart';
 
 class DrawerScreen extends StatefulWidget {
@@ -17,212 +19,158 @@ class _DrawerScreenState extends State<DrawerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Provider.of<ThemeChanger>(context);
+    var _screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       // backgroundColor: Theme.of(context).accentColor,
       resizeToAvoidBottomPadding: false,
+
       body: SwipeGestureRecognizer(
-        onSwipeLeft: (){
+        onSwipeLeft: () {
           Navigator.pop(context);
         },
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 35,
-            ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    'SwipeUp',
-                    style: GoogleFonts.spectralSc(
-                        color: const Color(0xff26374D),
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  Text(
-                    'News',
-                    style: GoogleFonts.spectralSc(
-                        color: Colors.blue,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
-                  )
-                ],
-              )
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10 , vertical: 5),
-              child: TextField(
-                autocorrect: true,
-                textInputAction: TextInputAction.search,
-                style: GoogleFonts.ptSans(fontSize: 16),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Search',
-                  prefixIcon: Icon(Icons.search),
-                ),
-                onSubmitted: (text) {
-                  searchedWord = text;
-                  Navigator.push(
-                      context,
-                      SlideFromRightPageRoute(
-                          widget: HomeScreen(
-                        title: searchedWord,
-                        searchedNews: searchedWord,
-                      )));
-                },
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              'News Sources',
-              style: GoogleFonts.ptSans(fontSize: 18),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Container(
-              height: 100,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: newsSource.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            SlideFromRightPageRoute(
-                                widget: HomeScreen(
-                              title: newsSource[index]['title'],
-                              domain: newsSource[index]['web'],
-                            )));
-                      },
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                          newsSource[index]['imageUrl'],
-                          height: 100,
-                          width: 150,
-                          fit: BoxFit.cover,
-                        ),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Container(
+                  padding: EdgeInsets.fromLTRB(
+                      15, MediaQuery.of(context).padding.top + 10, 12, 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Row(
+                        children: [
+                          Text('SwipeUp',
+                              style: GoogleFonts.spectralSc(
+                                  fontSize: 22, fontWeight: FontWeight.bold)),
+                          Text(
+                            'News',
+                            style: GoogleFonts.spectralSc(
+                                color: Colors.blue,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
                       ),
-                    ),
-                  );
-                },
+                      Transform.scale(
+                        scale: 1.3,
+                        child: Switch(
+                            activeColor: Colors.white70,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                            activeThumbImage: ExactAssetImage(
+                                'assets/moonIcon.png',
+                                scale: 2),
+                            inactiveThumbImage:
+                                ExactAssetImage('assets/sunIcon.png'),
+                            value: theme.getTheme(),
+                            onChanged: (value) {
+                              theme.changeTheme(value);
+                            }),
+                      ),
+                    ],
+                  )),
+              Container(
+                margin:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+                child: TextField(
+                  autocorrect: true,
+                  textInputAction: TextInputAction.search,
+                  style: GoogleFonts.ptSans(fontSize: 16),
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Search',
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                  onSubmitted: (text) {
+                    searchedWord = text;
+                    Navigator.push(
+                        context,
+                        SlideFromRightPageRoute(
+                            widget: HomeScreen(
+                          title: searchedWord,
+                          searchedNews: searchedWord,
+                        )));
+                  },
+                ),
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              'Categories',
-              style: GoogleFonts.ptSans(fontSize: 18),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Column(
-              children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    CategoryCard(
-                      category: categories[0]['category'],
-                      imageUrl: categories[0]['imageUrl'],
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            SlideFromRightPageRoute(
-                                widget: HomeScreen(
-                                    title: categories[0]['category'],
-                                    category: categories[0]['category'])));
-                      },
-                    ),
-                    CategoryCard(
-                        category: categories[1]['category'],
-                        imageUrl: categories[1]['imageUrl'],
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'News Sources',
+                style: GoogleFonts.ptSans(fontSize: 18),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                height: _screenHeight * 0.13,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: newsSource.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      child: InkWell(
                         onTap: () {
                           Navigator.push(
                               context,
                               SlideFromRightPageRoute(
                                   widget: HomeScreen(
-                                      title: categories[1]['category'],
-                                      category: categories[1]
-                                          ['category'])));
-                        })
-                  ],
+                                title: newsSource[index]['title'],
+                                domain: newsSource[index]['web'],
+                              )));
+                        },
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image.asset(
+                            newsSource[index]['imageUrl'],
+                            height: 100,
+                            width: 150,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    CategoryCard(
-                      category: categories[2]['category'],
-                      imageUrl: categories[2]['imageUrl'],
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            SlideFromRightPageRoute(
-                                widget: HomeScreen(
-                                    title: categories[2]['category'],
-                                    category: categories[2]['category'])));
-                      },
-                    ),
-                    CategoryCard(
-                      category: categories[3]['category'],
-                      imageUrl: categories[3]['imageUrl'],
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            SlideFromRightPageRoute(
-                                widget: HomeScreen(
-                                    title: categories[3]['category'],
-                                    category: categories[3]['category'])));
-                      },
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    CategoryCard(
-                      category: categories[4]['category'],
-                      imageUrl: categories[4]['imageUrl'],
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            SlideFromRightPageRoute(
-                                widget: HomeScreen(
-                                    title: categories[4]['category'],
-                                    category: categories[4]['category'])));
-                      },
-                    ),
-                    CategoryCard(
-                      category: categories[5]['category'],
-                      imageUrl: categories[5]['imageUrl'],
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            SlideFromRightPageRoute(
-                                widget: HomeScreen(
-                                    title: categories[5]['category'],
-                                    category: categories[5]['category'])));
-                      },
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                'Categories',
+                style: GoogleFonts.ptSans(fontSize: 18),
+              ),
+              Container(
+                height: _screenHeight * 0.55,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: GridView.builder(
+                    scrollDirection: Axis.vertical,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 1.4,
+                        mainAxisSpacing: 10,
+                        crossAxisSpacing: 5),
+                    itemCount: categories.length,
+                    itemBuilder: (context, index) {
+                      return CategoryCard(
+                          category: categories[index]['category'],
+                          imageUrl: categories[index]['imageUrl'],
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                SlideFromRightPageRoute(
+                                    widget: HomeScreen(
+                                        title: categories[index]['category'],
+                                        category: categories[index]
+                                            ['category'])));
+                          });
+                    }),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -244,15 +192,47 @@ class CategoryCard extends StatelessWidget {
         elevation: 8,
         child: Column(
           children: <Widget>[
-            Image.network(imageUrl,
-                fit: BoxFit.cover,
-                height: 90,
-                width: MediaQuery.of(context).size.width / 2.3,),
+            Image.asset(
+              imageUrl,
+              fit: BoxFit.cover,
+              height: MediaQuery.of(context).size.height * 0.11,
+              width: MediaQuery.of(context).size.width,
+            ),
             Text(category[0].toUpperCase() + category.substring(1),
-                style: GoogleFonts.ptSans(fontSize: 18, color: Colors.blue))
+                style: GoogleFonts.ptSans(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.blue))
           ],
         ),
       ),
     );
   }
 }
+
+/*void scheduleAlarm() async {
+  DateTime scheduledNotificationDateTime = DateTime.now().add(Duration(seconds: 10));
+
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    'alarm_notif',
+    'alarm_notif',
+    'Channel for Alarm notification',
+    icon: 'ic_launcher',
+    sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+    largeIcon: DrawableResourceAndroidBitmap('ic_launcher'),
+  );
+
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      sound: 'a_long_cold_sting.wav',
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true);
+  var platformChannelSpecifics = NotificationDetails(
+      androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.schedule(
+      0,
+      'Office',
+      'Good morning! Time for office.',
+      scheduledNotificationDateTime,
+      platformChannelSpecifics);
+}*/

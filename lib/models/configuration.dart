@@ -1,20 +1,29 @@
 
 List<Map> newsSource =[
-  {'title': 'Times of India' , 'imageUrl': 'https://ecosoapbank.org/static/media/times-of-india.0dc6e8a4.png' , 'web':'indiatimes.com'},
-  {'title': 'NDTV News', 'imageUrl':'https://mk0bizasialivexmdoes.kinstacdn.com/wp-content/uploads/2017/03/ndtv24x7001.jpg' ,'web':'ndtv.com'},
-  {'title': 'Maharashtra Times' , 'imageUrl': 'https://content.jdmagicbox.com/comp/kolhapur/h6/0231px231.x231.121017123414.b3h6/catalogue/maharashtra-times-nagala-park-kolhapur-publications-gl23csyk0y.jpg?clr=006600' , 'web': 'maharashtratimes.com'},
-  {'title': 'BBC', 'imageUrl':'https://www.thewrap.com/wp-content/uploads/2014/07/bbc-news-logo.jpg' ,'web':'bbc.com&language=en'},
-  {'title': 'Hindustan Times', 'imageUrl':'https://images-na.ssl-images-amazon.com/images/I/31IdAYfI4CL.jpg' ,'web':'hindustantimes.com'},
-  {'title': 'Zee News', 'imageUrl':'https://content1.jdmagicbox.com/comp/patna/y4/0612px612.x612.110315234714.c3y4/catalogue/zee-news-ltd-boring-road-patna-satellite-channels-mkleomeell.jpg' ,'web':'india.com'},
-  {'title': 'Wired', 'imageUrl':'https://images-na.ssl-images-amazon.com/images/I/21uEpob2fsL._SY355_.png' ,'web':'wired.com'}
+  {'title': 'Times of India' , 'imageUrl': 'assets/timesofIndia.png' , 'web':'indiatimes.com'},
+  {'title': 'NDTV News', 'imageUrl':'assets/ndtv.png' ,'web':'ndtv.com'},
+  {'title': 'LiveMint', 'imageUrl': 'assets/Livemint.jpg', 'web': 'livemint.com' },
+  {'title': 'Lokmat', 'imageUrl': 'assets/lokmat.jpg', 'web': 'lokmat.com' },
+  {'title': 'Maharashtra Times' , 'imageUrl': 'assets/maharashtraTimes.jpg' , 'web': 'maharashtratimes.com'},
+  {'title': 'FirstPost', 'imageUrl': 'assets/firstpost.jpg', 'web': 'firstpost.com' },
+  {'title': 'BBC', 'imageUrl':'assets/bbcNews.jpg' ,'web':'bbc.com&language=en'},
+  {'title': 'Wired', 'imageUrl':'assets/wired.jpg' ,'web':'wired.com'},
+  {'title': 'Time', 'imageUrl': 'assets/time.png', 'web': 'time.com' },
+  {'title': 'Hindustan Times', 'imageUrl':'assets/hindustantimes.jpg' ,'web':'hindustantimes.com'},
+  {'title': 'Indian Express', 'imageUrl': 'assets/indianexpress.jpg', 'web': 'indianexpress.com' },
+  {'title': 'India Today', 'imageUrl': 'assets/indiaToday.png', 'web': ' indiatoday.in' },
+  {'title': 'The Quint', 'imageUrl': 'assets/quint.jpg', 'web': 'thequint.com' },
+  {'title': 'Zee News', 'imageUrl':'assets/zeeNews.jpg' ,'web':'india.com'},
+  {'title': 'Reddit', 'imageUrl': 'assets/reddit.jpg', 'web': 'reddit.com' },
+  {'title': 'CNBC', 'imageUrl': 'assets/cnbc.png', 'web': 'cnbc.com' },
 ];
 
 List<Map> categories =[
-  { 'category': 'business' , 'imageUrl' : 'https://img.freepik.com/free-photo/business-man-holding-bright-light-bulb-hand_28629-1091.jpg?size=626&ext=jpg'},
-  { 'category': 'entertainment' , 'imageUrl' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTaO_u-ak3KE7PFszgXCsMnoJ6-esEcsEZFxQ&usqp=CAU'},
-  { 'category': 'health' , 'imageUrl' : 'https://www.tomorrowmakers.com/sites/default/files/2020-01/irdai%20health%20insurance.jpg'},
-  { 'category': 'science' , 'imageUrl' : 'https://s3-eu-west-1.amazonaws.com/ipsmedialibrary/wp-content/uploads/2018/11/27103016/32026541-science-seamless-pattern-back-to-school-background-.jpg'},
-  { 'category': 'sport' , 'imageUrl' : 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcR-Rs8GzPpqphM6ffa_nK-tAJB1hF9wveyKQw&usqp=CAU'},
-  { 'category': 'technology' , 'imageUrl' : 'https://akm-img-a-in.tosshub.com/indiatoday/images/story/201810/stockvault-person-studying-and-learning---knowledge-concept178241_0.jpeg?yCXmhi7e2ARwUtzHHlvtcrgETnDgFwCK'}
+  { 'category': 'business' , 'imageUrl' : 'assets/business.jpg'},
+  { 'category': 'entertainment' , 'imageUrl' : 'assets/entairtainment.png'},
+  { 'category': 'health' , 'imageUrl' : 'assets/health.jpg'},
+  { 'category': 'science' , 'imageUrl' : 'assets/science.jpg'},
+  { 'category': 'sport' , 'imageUrl' : 'assets/sports.jpg'},
+  { 'category': 'technology' , 'imageUrl' : 'assets/technology.jpg'}
 ];
 

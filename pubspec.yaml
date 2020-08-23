@@ -23,16 +23,17 @@ environment:
 dependencies:
   intl: ^0.16.1
   date_format: ^1.0.8
-  http: ^0.12.1
+  http: ^0.12.2
   swipe_gesture_recognizer: ^0.0.2
   splashscreen: ^1.2.0
+  provider: ^4.3.2+1
   flutter_page_transition: ^0.1.6
   cached_network_image: ^2.2.0+1
   google_fonts: ^1.1.0
-  shared_preferences: ^0.5.8
+  shared_preferences: ^0.5.10
   flutter_swiper: ^1.1.6
   webview_flutter: ^0.3.22+1
-  connectivity: ^0.4.9
+  connectivity: ^0.4.9+2
   flutter:
     sdk: flutter
 
@@ -58,11 +59,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/swipe.png
-    - assets/swipeUp.png
-    - assets/upleft.jpg
-    - assets/upright.jpg
-    - assets/upss.jpg
+    - assets/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'package:flutter_app/models/article_model.dart';
+import '../key/keys.dart';
+import '../models/article_model.dart';
 import 'package:http/http.dart' as http;
 
 class News {
   List<ArticleModel> news = [];
-  String apiKey = '088e0a35838e4d6191b27dc049ad7720';
+  //String apiKey = '088e0a35838e4d6191b27dc049ad7720';
   Future<void> getNews(String category , String searchedNews , String domain ) async {
 
     String link (String category , String searchedNews , String domain){
@@ -15,11 +16,10 @@ class News {
         return "http://newsapi.org/v2/top-headlines?country=in&category=$category&pageSize=50&apiKey=$apiKey";
       }
       else if(category == null && searchedNews== null ){
-        return "https://newsapi.org/v2/everything?domains=$domain&pageSize=50&apiKey=$apiKey";
+        return "https://newsapi.org/v2/everything?domains=$domain&sortBy=publishedAt&pageSize=50&apiKey=$apiKey";
       }
       else if(category == null && domain== null){
-        print(searchedNews);
-        return "https://newsapi.org/v2/everything?q=$searchedNews&pageSize=50&apiKey=$apiKey";
+        return "https://newsapi.org/v2/everything?q=$searchedNews&sortBy=publishedAt&pageSize=50&apiKey=$apiKey";
       }
       else{
         return null;
@@ -41,7 +41,7 @@ class News {
 
     if (jsonData["status"] == "ok") {
       jsonData["articles"].forEach((element) {
-        if (element["urlToImage"] != null && element["description"] != null) {
+        if (element["urlToImage"] != null && element["description"].toString().length > 80) {
           ArticleModel articleModel = ArticleModel(
             title: element["title"],
             description: element["description"],

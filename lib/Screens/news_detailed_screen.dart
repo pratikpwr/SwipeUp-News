@@ -23,7 +23,7 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SwipeGestureRecognizer(
-        onSwipeRight: (){
+        onSwipeRight: () {
           Navigator.pop(context);
         },
         child: Column(
@@ -33,14 +33,14 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
             ),
             Row(
               children: <Widget>[
-                IconButton(icon: Icon(Icons.arrow_back), onPressed:(){
-                  Navigator.pop(context);
-                }),
-
+                IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
                 Text(
                   'SwipeUp',
                   style: GoogleFonts.spectralSc(
-                      color: const Color(0xff26374D),
                       fontSize: 24,
                       fontWeight: FontWeight.bold),
                 ),
@@ -54,7 +54,7 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
               ],
             ),
             Container(
-              height: MediaQuery.of(context).size.height-80,
+              height: MediaQuery.of(context).size.height - 80,
               width: MediaQuery.of(context).size.width,
               child: WebView(
                 initialUrl: widget.newsUrl,
@@ -62,7 +62,7 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
                   ..add(Factory<PlatformViewVerticalGestureRecognizer>(
                       () => PlatformViewVerticalGestureRecognizer())),
                 javascriptMode: JavascriptMode.unrestricted,
-               onWebViewCreated: ((WebViewController webViewController) {
+                onWebViewCreated: ((WebViewController webViewController) {
                   _controller.complete(webViewController);
                 }),
               ),
@@ -73,6 +73,7 @@ class _NewsDetailedScreenState extends State<NewsDetailedScreen> {
     );
   }
 }
+
 // stack overflow solution -- vertical gestures where not working properly so added the below class
 //https://stackoverflow.com/questions/57069716/scrolling-priority-when-combining-horizontal-scrolling-with-webview
 class PlatformViewVerticalGestureRecognizer

@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Screens/drawer_screen.dart';
-import 'package:flutter_app/Screens/news_detailed_screen.dart';
-import 'package:flutter_app/custom_routes.dart';
+import '../Screens/drawer_screen.dart';
+import '../Screens/news_detailed_screen.dart';
+import '../custom_routes.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:swipe_gesture_recognizer/swipe_gesture_recognizer.dart';
@@ -38,6 +38,8 @@ class NewsTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var screenHeight = MediaQuery.of(context).size.height;
+    //var screenWidth = MediaQuery.of(context).size.width;
     return SwipeGestureRecognizer(
       onSwipeLeft: () {
         Navigator.push(
@@ -58,12 +60,13 @@ class NewsTile extends StatelessWidget {
             children: <Widget>[
               CachedNetworkImage(
                 imageUrl: imageUrl,
-                height: 320,
+                height: screenHeight * 0.44,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
               Container(
-                color: const Color(0xffffffff),
+                height: screenHeight * 0.04,
+                //color: const Color(0xffffffff),
                 child: Padding(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
@@ -87,30 +90,39 @@ class NewsTile extends StatelessWidget {
             ],
           ),
           Container(
-            height: MediaQuery.of(context).size.height - 370,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            height: screenHeight * 0.52,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 20,
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Column(
                   children: <Widget>[
+                    Divider(
+                      height: 2,
+                      thickness: 1.5,
+                    ),
                     SizedBox(
                       height: 10,
                     ),
                     Text(
                       sourceName,
                       style: GoogleFonts.ptSans(
-                          color: Colors.blueAccent, fontSize: 14),
+                          fontWeight: FontWeight.w600,
+                          color: Colors.blue,
+                          fontSize: 16),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 12,
                     ),
                     Text(
                       title,
+                      maxLines: 7,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.spectralSc(
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF080b10),
                           height: 0.95),
                     ),
                     SizedBox(
@@ -118,18 +130,18 @@ class NewsTile extends StatelessWidget {
                     ),
                     Text(desc,
                         maxLines: 7,
+                        overflow: TextOverflow.ellipsis,
                         style: GoogleFonts.ptSans(
                             fontSize: 17,
                             //fontWeight: FontWeight.bold,
                             color: const Color(0xFF7e808b))),
                   ],
                 ),
-                SizedBox(
-                  height: 15,
-                ),
                 Text('Swipe left for detailed News',
                     style: GoogleFonts.ptSans(
-                        color: Colors.blueAccent, fontSize: 12))
+                        fontWeight: FontWeight.w400,
+                        color: Colors.blue,
+                        fontSize: 12))
               ],
             ),
           ),

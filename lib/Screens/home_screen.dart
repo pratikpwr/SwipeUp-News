@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_app/Screens/drawer_screen.dart';
 import 'package:flutter_app/Widget/news_tile.dart';
@@ -46,55 +45,55 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Stack(
-          children: <Widget>[
-            isLoading
+      children: <Widget>[
+        isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : articles.length == 0
                 ? Center(
-                    child: CircularProgressIndicator(),
-                  )
-                : articles.length == 0
-                    ? Center(
-                        child: Text(
-                          'Error',
-                          style: GoogleFonts.ptSans(
-                              color: Colors.red, fontSize: 26),
-                        ),
-                      )
-                    : PageView.builder(
-                        scrollDirection: Axis.vertical,
-                        itemCount: articles.length,
-                        itemBuilder: (context, index) {
-                          return NewsTile(
-                            imageUrl: articles[index].urlToImage,
-                            title: articles[index].title,
-                            desc: articles[index].description,
-                            sourceName: articles[index].sourceName,
-                            url: articles[index].url,
-                            publishedAt: articles[index].publishedAt,
-                            heading:
-                                widget.title == null ? 'TopNews' : widget.title,
-                            category: widget.category == null
-                                ? 'TopNews'
-                                : widget.category,
-                          );
-                        },
-                      ),
-            Column(
-              children: <Widget>[
-                SizedBox(
-                  height: 25,
-                ),
-                IconButton(
-                    icon: Icon(
-                      Icons.menu,
-                      color: Colors.black,
+                    child: Text(
+                      'Error in getting News.',
+                      style:
+                          GoogleFonts.ptSans(color: Colors.red, fontSize: 26),
                     ),
-                    onPressed: () {
-                      Navigator.push(context,
-                          SlideFromLeftPageRoute(widget: DrawerScreen()));
-                    })
-              ],
+                  )
+                : PageView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) {
+                      return NewsTile(
+                        imageUrl: articles[index].urlToImage,
+                        title: articles[index].title,
+                        desc: articles[index].description,
+                        sourceName: articles[index].sourceName,
+                        url: articles[index].url,
+                        publishedAt: articles[index].publishedAt,
+                        heading:
+                            widget.title == null ? 'TopNews' : widget.title,
+                        category: widget.category == null
+                            ? 'TopNews'
+                            : widget.category,
+                      );
+                    },
+                  ),
+        Column(
+          children: <Widget>[
+            SizedBox(
+              height: MediaQuery.of(context).padding.top,
             ),
+            IconButton(
+                icon: Icon(
+                  Icons.menu,
+                  color: Colors.blue,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context, SlideFromLeftPageRoute(widget: DrawerScreen()));
+                })
           ],
-        ));
+        ),
+      ],
+    ));
   }
 }
